@@ -10,7 +10,7 @@ services:
 
 # Build Docker Image
 before_install:
-  - docker build -t brianbeck/react-test -f Dockerfile.dev .
+  - docker build -t brianbeck/react-test -f ./client/Dockerfile.dev .
 
 # Test Runner
 script:
