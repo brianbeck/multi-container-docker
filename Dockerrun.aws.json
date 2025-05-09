@@ -1,0 +1,43 @@
+{
+    "AWSEBDockerrunVersion": "2",
+    "authentication": {
+        "bucket": "elasticbeanstalk-us-east-1-651266901933",
+        "key": "Dockerrun.aws.json"
+    },
+    "containerDefinitions": [
+        {
+            "name": "client",
+            "image": "brianbeck/multi-client",
+            "hostname": "client",
+            "essential": false
+        },
+        {
+            "name": "server",
+            "image": "brianbeck/multi-server",
+            "hostname": "api",
+            "essential": false
+        },
+        {
+            "name": "worker",
+            "image": "brianbeck/multi-worker",
+            "hostname": "worker",
+            "essential": false
+        },
+        {
+            "name": "nginx",
+            "image": "brianbeck/multi-nginx",
+            "hostname": "nginx",
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 80
+                }
+            ],
+            "links": [
+                "client:client",
+                "server:api"
+            ]
+        }
+    ]
+}
