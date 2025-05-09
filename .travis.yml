@@ -1,0 +1,38 @@
+sudo: required
+dist: jammy
+group: edge
+language: node_js
+#language: generic
+node_js:
+ - "16"
+services:
+  - docker
+
+# Build Docker Image
+before_install:
+  - docker build -t brianbeck/react-test -f Dockerfile.dev .
+
+# Test Runner
+script:
+  - docker run -e CI=true brianbeck/react-test npm run test
+
+# Build Docker Images
+after_success:
+  - docker build -t brianbeck/multi-client ./client
+  - docker build -t brianbeck/multi-nginx ./nginx
+  - docker build -t brianbeck/multi-server ./server
+  - docker build -t brianbeck/multi-worker ./worker
+
+# Deploy to Elastic Beanstalk
+#deploy:
+#  provider: elasticbeanstalk
+#  region: "us-east-1"
+#  app: "Frontend"
+#  env: "Frontend-env"
+#  bucket-name: "elasticbeanstalk-us-east-1-651266901933"
+#  bucket-path: "Frontend"
+  # only deploy on changes to master 
+#  on:
+#    branch: master
+#  access_key_id: $AWS_ACCESS_KEY
+#  secret_access_key: $AWS_SECRET_KEY
