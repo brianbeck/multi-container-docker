@@ -23,6 +23,14 @@ after_success:
   - docker build -t brianbeck/multi-server ./server
   - docker build -t brianbeck/multi-worker ./worker
 
+# Push Docker Images
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  - docker push brianbeck/multi-client
+  - docker push brianbeck/multi-nginx
+  - docker push brianbeck/multi-server
+  - docker push brianbeck/multi-worker
+
 # Deploy to Elastic Beanstalk
 #deploy:
 #  provider: elasticbeanstalk
